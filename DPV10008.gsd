@@ -1,0 +1,238 @@
+;
+;********************* GSD for pbsoftstack Demo application **************************
+;* ================================================================================ *
+;*                                                                                  *
+;* Vendor:   schtiot                                                                *
+;*           https://schtiot.com:8000                                               *
+;*           Tel. : +86-13350849615                                                 *
+;*           eMail: xuji.zhao@foxmail.com                                           *
+;*                                                                                  *
+;* ================================================================================ *
+;*                                                                                  *
+;* Function:       Demo for pbsoftstack Software                                    *
+;*                                                                                  *
+;*                                                                                  *
+;* Order Number : PBSSV1-GD                                                         *
+;*                                                                                  *
+;* -------------------------------------------------------------------------------- *
+;* author: xuji.zhao                                                                *
+;*                                                                                  *
+;*           Tel. : +86-13350849615                                                 *
+;*           eMail: xuji.zhao@foxmail.com                                           *
+;* -------------------------------------------------------------------------------- *
+;*                                                                                  *
+;* history                                                                          *
+;* ================================================================================ *
+;* 10.10.2021 [V1.00]  first version                                                *
+;*                                                                                  *
+;* -------------------------------------------------------------------------------- *
+;*                                                                                  *
+;************************************************************************************
+
+
+#Profibus_DP
+
+
+;====================================================================================
+;==== Prm-Text-Def-List =============================================================
+;====================================================================================
+
+PrmText=1
+Text(0) = "disable"
+Text(1)="enable"
+EndPrmText
+
+;=====================================================================================
+;==== Ext-User-Prm-Data-Def-List =====================================================
+;=====================================================================================
+
+ExtUserPrmData=1 "[SlotNumber]"
+Unsigned8 0 0-32
+EndExtUserPrmData
+
+ExtUserPrmData=2 "Diagnostic Alarm"
+Bit(0) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=3 "hot control enable"
+Bit(0) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=4 "cool control enable"
+Bit(1) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=5 "temperature high-limit"
+Unsigned16 0x1f40  0x0000-0xffff
+EndExtUserPrmData
+
+ExtUserPrmData=6 "temperature low-limit"
+Unsigned16 0xf060 0x0000-0xFFFF
+EndExtUserPrmData
+
+
+;=====================================================================================
+;==== General DP Keywords ============================================================
+;=====================================================================================
+
+GSD_Revision = 5
+Vendor_Name = "SCHTIOT"
+Model_Name = "DPV10008"
+Revision = "1.00"
+Ident_Number = 0x0008
+Protocol_Ident = 0
+Station_Type = 0
+FMS_supp = 0
+Hardware_Release = "V1.00"
+Software_Release = "V1.00"
+Redundancy = 0
+Repeater_Ctrl_Sig = 2
+24V_Pins = 0
+
+
+;==============================================================================
+;==== Supported baudrates =====================================================
+;==============================================================================
+
+9.6_supp = 1
+19.2_supp = 1
+45.45_supp = 1
+93.75_supp = 1
+187.5_supp = 1
+500_supp = 1
+1.5M_supp = 1
+3M_supp = 1
+6M_supp = 0
+12M_supp = 0
+
+MaxTsdr_9.6=15
+MaxTsdr_19.2=15
+MaxTsdr_45.45=15
+MaxTsdr_93.75=15
+MaxTsdr_187.5=15
+MaxTsdr_500=15
+MaxTsdr_1.5M=20
+MaxTsdr_3M=35
+MaxTsdr_6M=50
+MaxTsdr_12M=95
+
+
+
+;==============================================================================
+;==== Slave specific values ===================================================
+;==============================================================================
+
+OrderNumber="PBSSV1-GD"
+Slave_Family = 3@schtiot@PBSSV1-GD
+Implementation_Type = "Soft"
+Info_Text="SCHTIOT: PROFIBUS DPV1 - slave, (PB soft stack, modular system, max 3 modules"
+Bitmap_Device = "DPV1_1N"
+Bitmap_SF="DPV1_1S"
+
+Freeze_Mode_supp=1
+Sync_Mode_supp=1
+Fail_Safe=1
+Auto_Baud_supp=0
+Set_Slave_Add_supp=1
+
+Min_Slave_Intervall=6
+
+Modular_Station=1
+Max_Module=3
+Modul_Offset=1
+Max_Input_Len=3
+Max_Output_Len=1
+Max_Data_Len=4
+Max_Diag_Data_Len=13
+
+
+;==============================================================================
+;==== User-Prm-Data ===========================================================
+;==============================================================================
+
+Max_User_Prm_Data_Len = 15
+Ext_User_Prm_Data_Const(0)= 0x00,0x00,0x00
+
+;==============================================================================
+;==== Modulstatus =============================================================
+;==============================================================================
+
+UnitDiagType=1
+X_Unit_Diag_Area = 24 - 24
+X_Value(1)= "Slot 1: high-limit"
+X_Unit_Diag_Area_End
+X_Unit_Diag_Area = 25 - 25
+X_Value(1)= "Slot 1: low-limit"
+X_Unit_Diag_Area_End
+EndUnitDiagType
+
+
+;==============================================================================
+;==== Module-Definition-List ==================================================
+;==============================================================================
+
+Module="AI16 (temperature)   " 0x50
+1
+Ext_Module_Prm_Data_Len=4
+Ext_User_Prm_Data_Const(0)=0x1F,0x40,0xF0,0X60
+Ext_User_Prm_Data_Ref(0)=5             ;temperature high-limit
+Ext_User_Prm_Data_Ref(2)=6             ;temperature low-limit
+Info_Text="SCHTIOT: temperature  limit supported"
+EndModule
+
+Module="DI8 (enable-status)    " 0x10
+2
+EndModule
+
+Module="DO8 (enable-ctr)"     0x20
+3
+Ext_Module_Prm_Data_Len=1
+Ext_User_Prm_Data_Const(0)=0x03
+Ext_User_Prm_Data_Ref(0)=3             ;hot control enable
+Ext_User_Prm_Data_Ref(0)=4             ;cool control enable
+Info_Text="SCHTIOT: hot and cool control supported"
+EndModule
+
+;==============================================================================
+;==== DPV1 KEY WORDS ==========================================================
+;==============================================================================
+
+DPV1_Slave                          = 1
+C1_Read_Write_supp                  = 1
+C1_Max_Data_Len                     = 240       ;The parameter specifies the maximum length of user data excluding
+                                                ;Function_Num, Slot_number, Index, Length, transferred on the
+                                                ;MSAC_1 communication channel.
+                                                ;Type: Unsigned8 (0 .. 240)
+C1_Response_Timeout                 = 300
+Diagnostic_Alarm_supp               = 1
+Process_Alarm_supp                  = 1
+Alarm_Type_Mode_supp                = 1
+WD_Base_1ms_supp                    = 1
+Publisher_supp                      = 1
+
+C2_Read_Write_supp                  = 1
+C2_Max_Data_Len                     = 240       ;The parameter specifies the maximum length of user data excluding
+                                                ;Function_Num, Slot_number, Index, Length, transferred on the
+                                                ;MSAC_2 communication channel.
+                                                ;Type: Unsigned8 (0,48 .. 240)
+C2_Response_Timeout                 = 300
+C2_Max_Count_Channels               = 3
+Max_Initiate_PDU_Length             = 52        ;The parameter specifies the maximum length of an Initiate Request
+                                                ;PDU including the Function_Num to the Resource Manager.
+                                                ;Type: Unsigned8 (0,52.. 244)
+DPV1_Data_Types                     = 0
+
+Ident_Maintenance_supp              = 1         ;I&M fuctions supported
+
+
+SlotDefinition
+Slot(1) = "Slot 1" 1 1
+Slot(2) = "Slot 2" 2 2
+Slot(3) = "Slot 3" 3 3
+EndSlotDefinition
+
+
+

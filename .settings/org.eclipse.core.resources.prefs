@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/DpCfg.h=GBK
+encoding//src/dp_demo.c=GBK
+encoding//src/dp_port.c=GBK
+encoding//src/dp_port.h=GBK
+encoding//src/pa_demo.c=GBK
+encoding//stack/crc_common.c=UTF-8
+encoding//stack/crc_common.h=UTF-8
+encoding//stack/dp.h=UTF-8
+encoding/stack=GBK

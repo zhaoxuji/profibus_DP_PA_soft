@@ -1,12 +1,3 @@
-# profibus_DP_PA_soft
-profibus DP and PA protocol stacks based on MCU.
-
-1、协议栈基于cortex-M4 GD32F30x、STM32L系列实现，协议栈和用户应用程序可共享一颗MCU资源。  
-2、协议栈占用FLASH小于48K，RAM占用小于12K，占用一个UART、TIMER、I2C资源。  
-3、支持DPV0 、DPV1 、PA全部功能，支持自适应波特率，STM32系列最大波特率3Mbps。基于此可开发DP 从站、冗余从站、PA设备、PROFIsafe设备。  
-4、你可以试用Releaselib/libdppa.a,但不得修改、商用，如有需要联系作者。  
-5、如需demo硬件、移植到其它平台、更详尽资料请联系作者. email: xuji.zhao@foxmail.com , Wechat: fredzxj。 
-
 ## DP-V1 demo 介绍
 
 该Demo模拟了一个恒温控制从站,功能说明如下。
